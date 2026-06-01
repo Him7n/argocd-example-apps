@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: himan-test-appset
+  namespace: himan-agent2
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - appName: linked-newapp
+            namespace: asdf
+            server: "https://35.233.139.33"
+            repoPath: helm-guestbook
+          - appName: linked-app2
+            namespace: asdf
+            server: "https://35.233.139.33"
+            repoPath: helm-dependency
+  template:
+    metadata:
+      name: "{{.appName}}"
+      labels:
+        harness.io/envRef: pipelineenv
+        harness.io/serviceRef: pipelineservice
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Him7n/argocd-example-apps.git
+        targetRevision: master
+        path: "{{.repoPath}}"
+      destination:
+        server: "{{.server}}"
+        namespace: "{{.namespace}}"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
