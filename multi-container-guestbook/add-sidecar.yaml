@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-guestbook-ui
+spec:
+  template:
+    spec:
+      containers:
+        - name: sidecar-logger
+          image: busybox:1.36
+          command: ['sh', '-c', 'while true; do echo "[sidecar] $(date)"; sleep 30; done']
+        - name: debug-tools
+          image: alpine:3.18
+          command: ['sh', '-c', 'sleep infinity']
