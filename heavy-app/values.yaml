@@ -1,0 +1,12 @@
+# Number of resource groups to generate.
+# Each group = 1 ConfigMap + 1 Deployment + 1 Service = 3 resources
+# replicaCount: 167 → ~500 total resources
+# replicaCount: 50  → ~150 total resources (quick test)
+replicaCount: 167
+
+image:
+  repository: nginx
+  tag: "1.25"
+  pullPolicy: IfNotPresent
+
+resources: {}

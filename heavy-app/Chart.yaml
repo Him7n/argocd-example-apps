@@ -1,0 +1,6 @@
+apiVersion: v2
+name: heavy-app
+description: A large Helm chart for reproducing ArgoCD server-side diff timeout (CDS-126736)
+type: application
+version: 0.1.0
+appVersion: "1.0"

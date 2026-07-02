@@ -1,0 +1,57 @@
+{{- range $i := until (int .Values.replicaCount) }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: heavy-app-config-{{ $i }}
+  labels:
+    app: heavy-app
+    group: "{{ $i }}"
+data:
+  index: "{{ $i }}"
+  description: "ConfigMap {{ $i }} for server-side diff load test"
+  payload: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heavy-app-deploy-{{ $i }}
+  labels:
+    app: heavy-app
+    group: "{{ $i }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heavy-app
+      group: "{{ $i }}"
+  template:
+    metadata:
+      labels:
+        app: heavy-app
+        group: "{{ $i }}"
+    spec:
+      containers:
+        - name: nginx
+          image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heavy-app-svc-{{ $i }}
+  labels:
+    app: heavy-app
+    group: "{{ $i }}"
+spec:
+  selector:
+    app: heavy-app
+    group: "{{ $i }}"
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+{{- end }}
