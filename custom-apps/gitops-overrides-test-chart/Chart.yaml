@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gitops-overrides-test
+description: Harness GitOps overrides/expressions test chart (reuse env vars + add service/project)
+type: application
+version: 0.9.0
+appVersion: "1.0"

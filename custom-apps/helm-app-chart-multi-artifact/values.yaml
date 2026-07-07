@@ -1,0 +1,10 @@
+replicaCount: 2
+
+containers:
+  - name: nginx
+    image: nginx:latest
+    port: 80
+
+  - name: busybox
+    image: busybox
+    command: ["sh", "-c", "while true; do echo Hello from BusyBox; sleep 10; done"]

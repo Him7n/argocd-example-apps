@@ -1,0 +1,39 @@
+image:
+  tag: "v0.0.1"
+  repository: "ashinsabu/secret-expression-resolution"
+  pullPolicy: "Always"
+ingress:
+  path: "/"
+  hosts:
+  - "abx"
+  annotations: {}
+  tls: []
+  enabled: true
+replicaCount: 1
+tolerations: []
+service:
+  port: 8080
+  type: "ClusterIP"
+containerPort: 8080
+resources:
+  limits:
+    cpu: "0.5"
+    memory: "512Mi"
+  requests:
+    cpu: "0.5"
+    memory: "512Mi"
+nodeSelector: {}
+affinity: {}
+
+expressionsResolvedConfigmapName: "expressions-resolved-values-cm"
+expressionsSecretName: "expressions-secret"
+
+secretExpressions:
+  - "<+secrets.getValue(\"account.GitopsVaultSecretInline\")>"
+  - "<+secrets.getValue(\"account.GitopsVaultSecretRef\")>"
+  - "<+secrets.getValue(\"account.GitopsHSMSecret\")>"
+# ConfigMap values - the expected resolved values
+configMapValues:
+  - "GITOPS_VAULT_INLINE_SECRET_VALUE"
+  - "GITOPS_VAULT_REF_SECRET_VALUE"
+  - "GITOPS_HSM_SECRET_VALUE"

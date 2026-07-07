@@ -1,0 +1,6 @@
+apiVersion: v2
+name: degraded-app
+description: test-degrade-app-chart
+type: application
+version: 0.9.0
+appVersion: "1.0"

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    app: {{ .Values.app.name }}
+    environment: {{ .Values.app.environment }}
+    feature-flag: {{ .Values.app.featureFlag }}
+    pipeline-execution-id: {{ .Values.pipeline.executionId }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+        environment: {{ .Values.app.environment }}
+        feature-flag: {{ .Values.app.featureFlag }}
+        pipeline-execution-id: {{ .Values.pipeline.executionId }}
+    spec:
+      containers:
+        - name: {{ .Values.app.name }}
+          image: alpine
+          ports:
+            - containerPort: 80

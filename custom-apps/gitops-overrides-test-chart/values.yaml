@@ -1,0 +1,53 @@
+# ONLY Harness expressions.
+
+image:
+  repository: busybox
+  # Default to service STRING imageTag. You can switch to secret by changing this to:
+  # "<+service.variables.SVC_imageTag_secret__Secret>"
+  tag: "<+service.variables.SVC_imageTag_str_ok__String>"
+
+# Must resolve to int-like. Keep using your known-good env var.
+replicaCount: <+env.variables.ENV_replicaCount_num_ok__Number>
+
+testEnv:
+  # -------------------------
+  # EXISTING ENV VARS (reused)
+  # -------------------------
+  ENV_boolEnabled_num_0__Number: "<+env.variables.ENV_boolEnabled_num_0__Number>"
+  ENV_boolEnabled_num_1__Number: "<+env.variables.ENV_boolEnabled_num_1__Number>"
+  ENV_boolEnabled_str_false__String: "<+env.variables.ENV_boolEnabled_str_false__String>"
+  ENV_boolEnabled_str_true__String: "<+env.variables.ENV_boolEnabled_str_true__String>"
+
+  ENV_imageTag_str_ok__String: "<+env.variables.ENV_imageTag_str_ok__String>"
+
+  ENV_maybeEmpty_str_empty__String: "<+env.variables.ENV_maybeEmpty_str_empty__String>"
+  ENV_missingVar__DO_NOT_CREATE: "<+env.variables.ENV_missingVar__DO_NOT_CREATE>"
+
+  ENV_nested: "replicas=<+env.variables.ENV_replicaCount_num_ok__Number>; port=<+env.variables.ENV_numberPort_num_ok__Number>; tag=<+env.variables.ENV_imageTag_str_ok__String>"
+
+  ENV_numberPort_num_ok__Number: "<+env.variables.ENV_numberPort_num_ok__Number>"
+  ENV_numberPort_str_ok__String: "<+env.variables.ENV_numberPort_str_ok__String>"
+
+  ENV_replicaCount_num_large__Number: "<+env.variables.ENV_replicaCount_num_large__Number>"
+  ENV_replicaCount_num_negative__Number: "<+env.variables.ENV_replicaCount_num_negative__Number>"
+  ENV_replicaCount_num_ok__Number: "<+env.variables.ENV_replicaCount_num_ok__Number>"
+  ENV_replicaCount_num_zero__Number: "<+env.variables.ENV_replicaCount_num_zero__Number>"
+  ENV_replicaCount_str_3__String: "<+env.variables.ENV_replicaCount_str_3__String>"
+
+  ENV_secret_demo__Secret: "<+env.variables.ENV_secret_demo__Secret>"
+
+  # -------------------------
+  # NEW: SERVICE VARS (add a couple)
+  # -------------------------
+  SVC_imageTag_str_ok__String: "<+serviceVariables.SVC_imageTag_str_ok__String>"
+  SVC_imageTag_secret__Secret: "<+serviceVariables.SVC_imageTag_secret__Secret>"
+  SVC_serviceVarA_str_ok__String: "<+serviceVariables.SVC_serviceVarA_str_ok__String>"
+
+  # -------------------------
+  # NEW: PROJECT VARS via <+variables.*> (add a couple)
+  # -------------------------
+  PROJ_projVarA_str_ok__String: "<+variable.PROJ_projVarA_str_ok__String>"
+  PROJ_projVarB_str_ok__String: "<+variable.PROJ_projVarB_str_ok__String>"
+
+  # Mixed proof
+  MIX_env_svc_proj: "env=<+env.variables.ENV_replicaCount_num_ok__Number>; svc=<+serviceVariables.SVC_serviceVarA_str_ok__String>; proj=<+variable.PROJ_projVarA_str_ok__String>"

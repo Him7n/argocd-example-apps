@@ -1,0 +1,6 @@
+app:
+  name: dummy-app-for-squash-and-merge
+  environment: playground
+  featureFlag: squash-Commit1-G4ELHj0GSWKKrcjAYRNc5w+commit2
+pipeline:
+  executionId: cnUFiRbHTtuUn78I2NK74w

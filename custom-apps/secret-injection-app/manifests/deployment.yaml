@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-secret-test-app
+  namespace: ivan-test
+  labels:
+    app: gitops-secret-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops-secret-test
+  template:
+    metadata:
+      labels:
+        app: gitops-secret-test
+    spec:
+      containers:
+        - name: secret-tester
+          image: busybox:1.36
+          imagePullPolicy: IfNotPresent
+          env:
+            # TEXT secrets
+            - name: ACC_TEXT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-account-text
+                  key: value
+            - name: ORG_TEXT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-org-text
+                  key: value
+            - name: PROJ_TEXT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-project-text
+                  key: value
+
+            # FILE secrets (contents injected as strings for this test)
+            - name: ACC_FILE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-account-file
+                  key: value
+            - name: ORG_FILE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-org-file
+                  key: value
+            - name: PROJ_FILE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gitops-secret-project-file
+                  key: value
+
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "====================================="
+              echo " GitOps secret injection test container"
+              echo " Current time: $(date)"
+              echo "====================================="
+              echo ""
+              echo "TEXT SECRETS:"
+              echo "  ACC_TEXT_SECRET:  '$ACC_TEXT_SECRET'"
+              echo "  ORG_TEXT_SECRET:  '$ORG_TEXT_SECRET'"
+              echo "  PROJ_TEXT_SECRET: '$PROJ_TEXT_SECRET'"
+              echo ""
+              echo "FILE SECRETS (first 80 chars for brevity):"
+              echo "  ACC_FILE_SECRET:  \"${ACC_FILE_SECRET:0:80}\""
+              echo "  ORG_FILE_SECRET:  \"${ORG_FILE_SECRET:0:80}\""
+              echo "  PROJ_FILE_SECRET: \"${PROJ_FILE_SECRET:0:80}\""
+              echo ""
+              echo "Lengths:"
+              echo "  ACC_TEXT_SECRET len:  ${#ACC_TEXT_SECRET}"
+              echo "  ORG_TEXT_SECRET len:  ${#ORG_TEXT_SECRET}"
+              echo "  PROJ_TEXT_SECRET len: ${#PROJ_TEXT_SECRET}"
+              echo "  ACC_FILE_SECRET len:  ${#ACC_FILE_SECRET}"
+              echo "  ORG_FILE_SECRET len:  ${#ORG_FILE_SECRET}"
+              echo "  PROJ_FILE_SECRET len: ${#PROJ_FILE_SECRET}"
+              echo ""
+              echo "====================================="
+              echo "Entering heartbeat loop..."
+              echo "====================================="
+
+              while true; do
+                echo "$(date) - Heartbeat:"
+                echo "  ACC_TEXT_SECRET='$ACC_TEXT_SECRET'"
+                echo "  ORG_TEXT_SECRET='$ORG_TEXT_SECRET'"
+                echo "  PROJ_TEXT_SECRET='$PROJ_TEXT_SECRET'"
+                echo "  ACC_FILE_SECRET(first 40)=\"${ACC_FILE_SECRET:0:40}\""
+                echo "  ORG_FILE_SECRET(first 40)=\"${ORG_FILE_SECRET:0:40}\""
+                echo "  PROJ_FILE_SECRET(first 40)=\"${PROJ_FILE_SECRET:0:40}\""
+                sleep 30
+              done

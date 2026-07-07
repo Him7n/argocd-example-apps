@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-artifact-k8s-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: multi-artifact-k8s-app
+  template:
+    metadata:
+      labels:
+        app: multi-artifact-k8s-app
+    spec:
+      containers:
+        - name: multi-artifact-k8s-container-1
+          image: alpine
+          ports:
+            - containerPort: 80
+        - name: multi-artifact-k8s-container-2
+          image: busybox
+          ports:
+            - containerPort: 80

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-app-chart-multi-artifact
+  labels:
+    app: helm-app-chart-multi-artifact
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: helm-app-chart-multi-artifact
+  template:
+    metadata:
+      labels:
+        app: helm-app-chart-multi-artifact
+    spec:
+      containers:
+        {{- range .Values.containers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          {{- if .port }}
+          ports:
+            - containerPort: {{ .port }}
+          {{- end }}
+          {{- if .command }}
+          command: {{ toYaml .command | nindent 10 }}
+          {{- end }}
+        {{- end }}

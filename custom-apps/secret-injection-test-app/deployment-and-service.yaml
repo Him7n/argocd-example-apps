@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secret-expression-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secret-expression-test
+  template:
+    metadata:
+      labels:
+        app: secret-expression-test
+    spec:
+      containers:
+      - name: secret-checker
+        image: ashinsabu/secret-expression-resolution:v0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        envFrom:
+        - configMapRef:
+            name: secret-expression-test-configmap
+        - secretRef:
+            name: secret-expression-test-secret
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: secret-expression-test
+spec:
+  selector:
+    app: secret-expression-test
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  type: ClusterIP

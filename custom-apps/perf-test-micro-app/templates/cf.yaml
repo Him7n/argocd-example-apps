@@ -1,0 +1,10 @@
+{{- $cfg := (.Files.Get "config.yaml" | fromYaml) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-dummy-config" .Release.Name | trunc 63 | trimSuffix "-" }}
+  namespace: {{ default "default" $cfg.namespace | quote }}
+  labels:
+    is-for-manual-sync: "perf-test-app-please-delete"
+data:
+  value: {{ $cfg.pipelineExecutionId | quote }}

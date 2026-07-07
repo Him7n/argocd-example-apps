@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-repro
+  labels:
+    app: quote-repro
+spec:
+  replicas: 1                     # number (must stay number)
+  selector:
+    matchLabels:
+      app: quote-repro
+  template:
+    metadata:
+      labels:
+        app: quote-repro
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25        # string (primary update target)
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80    # number (must stay number)
+          command:                 # list (must remain list)
+            - sh
+            - -c
+          args:
+            - 'echo START && echo "has-quotes" && sleep 3600'
+          env:
+            - name: FEATURE_ENABLED
+              value: "true"        # string that looks like bool

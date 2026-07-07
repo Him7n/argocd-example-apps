@@ -1,0 +1,6 @@
+apiVersion: v2
+name: test-replicaset-with-mix-of-pods
+description: Minimal Deployment whose image tag changes create new ReplicaSets
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

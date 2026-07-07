@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: expression-test-configmap
+data:
+  accountVar: "<+variable.account.gitops_exp_acc_var>"
+  orgVar: "<+variable.org.gitops_exp_org_var>"
+  projectVar: "<+variable.gitops_exp_proj_var>"
+  svcStringVar: "<+serviceVariables.stringvar>"
+  svcIntVar: "<+serviceVariables.intvar>"
+  svcExpressionVar: "<+serviceVariables.expressionvar>"
+  envStringVar: "<+env.variables.stringvar>"
+  envIntVar: "<+env.variables.intvar>"
+  envExpressionVar: "<+env.variables.expressionvar>"
+  envOverrideVar: "<+serviceVariables.envoverriden_var>"

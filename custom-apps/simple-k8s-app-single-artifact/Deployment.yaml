@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: single-artifact-k8s-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: single-artifact-k8s-app
+  template:
+    metadata:
+      labels:
+        app: single-artifact-k8s-app
+    spec:
+      containers:
+        - name: single-artifact-k8s-container
+          image: alpine
+          ports:
+            - containerPort: 80

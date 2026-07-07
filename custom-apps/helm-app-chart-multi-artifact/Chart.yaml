@@ -1,0 +1,6 @@
+apiVersion: v2
+name: helm-app-chart-multi-artifact
+description: Minimal Helm chart with multiple containers per pod
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
