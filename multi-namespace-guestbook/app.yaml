@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: multi-namespace-guestbook
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps
+    targetRevision: HEAD
+    path: multi-namespace-guestbook
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frontend   # default fallback for manifests with no metadata.namespace
+  syncPolicy:
+    syncOptions:
+      # Required: allows ArgoCD to create/manage Namespace resources (cluster-scoped).
+      - CreateNamespace=true

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-cache
+  namespace: cache-layer   # Explicit namespace — ArgoCD deploys here regardless of spec.destination.namespace.
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: guestbook-cache
+  template:
+    metadata:
+      labels:
+        app: guestbook-cache
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379

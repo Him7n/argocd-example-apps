@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-frontend
+  # No metadata.namespace here — ArgoCD applies spec.destination.namespace ("frontend").
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: guestbook-frontend
+  template:
+    metadata:
+      labels:
+        app: guestbook-frontend
+    spec:
+      containers:
+        - name: guestbook-ui
+          image: gcr.io/google-samples/gb-frontend:v5
+          ports:
+            - containerPort: 80
