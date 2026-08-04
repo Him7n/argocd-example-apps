@@ -6,7 +6,7 @@ from a chart repo plus value files from this git repository.
 ## Layout
 
 ```
-customapps/
+custom-apps/values-ref-nginx/
 ├── helm-values/
 │   └── nginx-values.yaml
 ├── example-multisource-application.yaml
@@ -16,7 +16,7 @@ customapps/
 Because this repo is `argocd-example-apps` (not a values-only repo), `$values/...` paths are
 **relative to the git repo root**. Use:
 
-`$values/customapps/helm-values/nginx-values.yaml`
+`$values/custom-apps/values-ref-nginx/helm-values/nginx-values.yaml`
 
 ## How it works
 
@@ -29,7 +29,7 @@ Because this repo is `argocd-example-apps` (not a values-only repo), `$values/..
 
 ```yaml
 sources:
-  - repoURL: https://github.com/<org>/argocd-example-apps.git
+  - repoURL: https://github.com/Him7n/argocd-example-apps.git
     targetRevision: HEAD
     ref: values
   - repoURL: https://charts.bitnami.com/bitnami
@@ -37,7 +37,7 @@ sources:
     targetRevision: "18.2.2"
     helm:
       valueFiles:
-        - $values/customapps/helm-values/nginx-values.yaml
+        - $values/custom-apps/values-ref-nginx/helm-values/nginx-values.yaml
 ```
 
 Params: `agent_id`, `cluster_identifier`, `skip_repo_validation: true` (or register repos).
@@ -51,4 +51,4 @@ Include **both** sources in pipeline `sources[]` when updating (list replacement
 ## Note vs Harness automation
 
 Automation uses `gitops-automation.git` with `helm-values/` at repo root (`$values/helm-values/...`).
-Here values live under `customapps/`, so the `$values` path includes the `customapps/` prefix.
+Here values live under `custom-apps/values-ref-nginx/`, so the `$values` path includes that prefix.

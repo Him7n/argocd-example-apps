@@ -1,7 +1,8 @@
 # Example Argo CD Application — Helm chart + external git values (ref: values).
 #
-# Source 0 (values git): this repo at customapps/helm-values/ — entry has ref: values.
-# Source 1 (Helm chart): Bitnami nginx — reads values via $values/helm-values/nginx-values.yaml
+# Source 0 (values git): this repo — entry has ref: values.
+# Source 1 (Helm chart): Bitnami nginx — reads values via
+#   $values/custom-apps/values-ref-nginx/helm-values/nginx-values.yaml
 #
 # Register this git repo in Harness GitOps, then create with skip_repo_validation or repo_identifier.
 # Replace <repo-url>, destination, labels, and targetRevision for your environment.
@@ -23,7 +24,7 @@ spec:
       targetRevision: "18.2.2"
       helm:
         valueFiles:
-          - $values/customapps/helm-values/nginx-values.yaml
+          - $values/custom-apps/values-ref-nginx/helm-values/nginx-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: nginx-values-ref-example

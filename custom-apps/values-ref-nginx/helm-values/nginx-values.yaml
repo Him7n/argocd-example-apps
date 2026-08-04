@@ -1,5 +1,6 @@
 # External Helm values for Bitnami nginx chart (multi-source ref: values pattern).
-# Referenced from the chart source as: $values/customapps/helm-values/nginx-values.yaml
+# Referenced from the chart source as:
+#   $values/custom-apps/values-ref-nginx/helm-values/nginx-values.yaml
 #
 # Chart source (separate Application source entry):
 #   repoURL: https://charts.bitnami.com/bitnami
