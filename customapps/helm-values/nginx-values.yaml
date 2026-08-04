@@ -1,0 +1,24 @@
+# External Helm values for Bitnami nginx chart (multi-source ref: values pattern).
+# Referenced from the chart source as: $values/customapps/helm-values/nginx-values.yaml
+#
+# Chart source (separate Application source entry):
+#   repoURL: https://charts.bitnami.com/bitnami
+#   chart: nginx
+#   targetRevision: "18.2.2"
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
