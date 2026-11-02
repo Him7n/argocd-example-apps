@@ -1,17 +1,26 @@
 {{- range .Values.applications }}
 {{- $config := $.Values.config -}}
+{{- /*
+  Namespace where the child Application CR itself is created.
+  Order: per-app `namespace` -> config.applicationNamespace -> the parent's destination namespace
+  (Release.Namespace). On a Harness agent this must be a namespace the agent reconciles,
+  otherwise the child CR is created but never gets a status.
+*/ -}}
+{{- $appNamespace := .namespace | default $config.applicationNamespace | default $.Release.Namespace -}}
+{{- /* `destination` is optional per app; avoid a nil-pointer when it is missing. */ -}}
+{{- $destination := .destination | default dict -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ printf "example.%s" .name | quote }}
-  namespace: argocd
+  namespace: {{ $appNamespace | quote }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: {{ .namespace | default .name | quote }}
+    namespace: {{ $destination.namespace | default .name | quote }}
     server: {{ $config.spec.destination.server | quote }}
-  project: default
+  project: {{ .project | default $config.project | default "default" | quote }}
   source:
     path: {{ .path | default .name | quote }}
     repoURL: {{ $config.spec.source.repoURL }}
