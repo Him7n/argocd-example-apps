@@ -4,9 +4,9 @@ config:
   # Namespace where the CHILD Application CRs are created. It must be a namespace
   # the agent's application-controller reconciles (the agent namespace), otherwise
   # the children get no status/health.
-  applicationNamespace: gitopssanityagent-qa-2829341607-ns
+  applicationNamespace: argocd
   # AppProject for the children. Must exist and be allowed to use the repo/destination below.
-  project: default-donotremovehimanshutest
+  project: ac87e41e
   spec:
     destination:
       server: https://kubernetes.default.svc
