@@ -1,0 +1,18 @@
+# Values for the nested level of values-nested.yaml. Its apps differ from the parent's apps because
+# the child Application CRs of both levels live in the same namespace and need unique names.
+config:
+  applicationNamespace: argocd-1
+  project: ac87e41e
+  spec:
+    destination:
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://github.com/argoproj/argocd-example-apps
+      targetRevision: master
+
+applications:
+  - name: helm-guestbook
+    tool:
+      helm:
+        releaseName: helm-guestbook
+  - name: kustomize-guestbook
