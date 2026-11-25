@@ -1,11 +1,13 @@
 # Nested App-of-Apps for testing the Sync step with a child that is itself a parent (depth 1).
 #
 #   <this parent>
-#   +- example.guestbook                (leaf app)
-#   +- example.nested-apps              (child that is also a parent, rendered with values-nested-child.yaml)
-#      +- example.helm-guestbook        (leaf app)
-#      +- example.kustomize-guestbook   (leaf app)
+#   +- example.nested-guestbook                (leaf app)
+#   +- example.nested-apps                     (child that is also a parent, rendered with values-nested-child.yaml)
+#      +- example.nested-helm-guestbook        (leaf app)
+#      +- example.nested-kustomize-guestbook   (leaf app)
 #
+# Every app has a "nested-" name and the path of the regular example app, so none of them shares an
+# Application CR (or a destination namespace) with the apps of values.yaml and both can be installed together.
 # Use it as the helm valueFiles of an Application whose source path is "apps".
 config:
   applicationNamespace: argocd-1
@@ -18,7 +20,8 @@ config:
       targetRevision: master
 
 applications:
-  - name: guestbook
+  - name: nested-guestbook
+    path: guestbook
   - name: nested-apps
     # this chart again, with the child values below, so this child creates its own child apps
     path: apps

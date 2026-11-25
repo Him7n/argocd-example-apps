@@ -1,5 +1,5 @@
-# Values for the nested level of values-nested.yaml. Its apps differ from the parent's apps because
-# the child Application CRs of both levels live in the same namespace and need unique names.
+# Values for the nested level of values-nested.yaml. The Application CRs of every level live in the same
+# namespace, so each app has a unique "nested-" name and reuses the path of the regular example app.
 config:
   applicationNamespace: argocd-1
   project: ac87e41e
@@ -11,8 +11,10 @@ config:
       targetRevision: master
 
 applications:
-  - name: helm-guestbook
+  - name: nested-helm-guestbook
+    path: helm-guestbook
     tool:
       helm:
-        releaseName: helm-guestbook
-  - name: kustomize-guestbook
+        releaseName: nested-helm-guestbook
+  - name: nested-kustomize-guestbook
+    path: kustomize-guestbook
